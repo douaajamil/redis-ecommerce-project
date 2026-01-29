@@ -1,0 +1,6 @@
+# seuil = 5 requêtes par minute
+INCR rate:1
+INCR rate:1
+INCR rate:1
+EXPIRE rate:1 60
+TTL rate:1
