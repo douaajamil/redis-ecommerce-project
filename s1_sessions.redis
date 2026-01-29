@@ -1,0 +1,6 @@
+HSET session:1 token "abc123" created_at "2026-01-03T10:00:00" last_seen "2026-01-03T10:00:00"
+EXPIRE session:1 1800
+TTL session:1
+HGETALL session:1
+EXPIRE session:1 1800
+TTL session:1
