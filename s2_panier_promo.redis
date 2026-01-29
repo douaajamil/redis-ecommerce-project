@@ -1,0 +1,18 @@
+HSET cart:1 produit101 2
+HSET cart:1 produit205 1
+HGETALL cart:1
+
+HSET cart:1 produit101 3
+HGETALL cart:1
+
+HDEL cart:1 produit205
+HGETALL cart:1
+
+EXPIRE cart:1 86400
+TTL cart:1
+
+SET promo:SUMMER2026:quota 3
+GET promo:SUMMER2026:quota
+DECR promo:SUMMER2026:quota
+DECR promo:SUMMER2026:quota
+GET promo:SUMMER2026:quota
