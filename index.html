@@ -1,14 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Mini E-commerce</title>
+<meta charset="UTF-8">
+<title>Mini E-commerce</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>Mon mini shop</h1>
+<header>
+  <h1>Mini Shop</h1>
+  <p>Projet Redis — Licence 3 Informatique</p>
+</header>
 
-<p>Produit 1</p>
-<button>Ajouter au panier</button>
+<section class="container">
+
+<h2>Produits</h2>
+
+<div class="products">
+
+<div class="card">
+  <h3>Produit 1</h3>
+  <p class="price">10 €</p>
+  <button onclick="addToCart(10)">Ajouter au panier</button>
+</div>
+
+<div class="card">
+  <h3>Produit 2</h3>
+  <p class="price">20 €</p>
+  <button onclick="addToCart(20)">Ajouter au panier</button>
+</div>
+
+<div class="card">
+  <h3>Produit 3</h3>
+  <p class="price">15 €</p>
+  <button onclick="addToCart(15)">Ajouter au panier</button>
+</div>
+
+</div>
+
+<div class="cart">
+<h2>Panier</h2>
+<p>Nombre d’articles : <span id="count">0</span></p>
+<p>Total : <span id="total">0</span> €</p>
+</div>
+
+</section>
+
+<footer>
+© 2026 — Mini E-commerce Redis
+</footer>
+
+<script>
+let count = 0;
+let total = 0;
+
+function addToCart(price) {
+    count++;
+    total += price;
+
+    document.getElementById("count").innerText = count;
+    document.getElementById("total").innerText = total;
+}
+</script>
 
 </body>
 </html>
