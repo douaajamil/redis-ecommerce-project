@@ -22,27 +22,36 @@
 <div class="card">
   <h3>Produit 1</h3>
   <p class="price">10 €</p>
-  <button onclick="addToCart(10)">Ajouter au panier</button>
+  <button onclick="addToCart('Produit 1',10)">Ajouter au panier</button>
 </div>
 
 <div class="card">
   <h3>Produit 2</h3>
   <p class="price">20 €</p>
-  <button onclick="addToCart(20)">Ajouter au panier</button>
+  <button onclick="addToCart('Produit 2',20)">Ajouter au panier</button>
 </div>
 
 <div class="card">
   <h3>Produit 3</h3>
   <p class="price">15 €</p>
-  <button onclick="addToCart(15)">Ajouter au panier</button>
+  <button onclick="addToCart('Produit 3',15)">Ajouter au panier</button>
 </div>
 
 </div>
 
 <div class="cart">
 <h2>Panier</h2>
-<p>Nombre d’articles : <span id="count">0</span></p>
+
+<ul id="cartList"></ul>
+
 <p>Total : <span id="total">0</span> €</p>
+
+<h3>Code promo</h3>
+<input type="text" id="promoInput" placeholder="Entrer code promo">
+<button onclick="applyPromo()">Appliquer</button>
+
+<p id="promoMsg"></p>
+
 </div>
 
 </section>
@@ -52,15 +61,43 @@
 </footer>
 
 <script>
-let count = 0;
+let cart = [];
 let total = 0;
 
-function addToCart(price) {
-    count++;
-    total += price;
+function addToCart(name, price) {
+    cart.push({name, price});
+    updateCart();
+}
 
-    document.getElementById("count").innerText = count;
+function removeItem(index) {
+    total -= cart[index].price;
+    cart.splice(index,1);
+    updateCart();
+}
+
+function updateCart() {
+    const list = document.getElementById("cartList");
+    list.innerHTML = "";
+    total = 0;
+
+    cart.forEach((item,i) => {
+        total += item.price;
+        list.innerHTML += `<li>${item.name} - ${item.price}€ 
+        <button onclick="removeItem(${i})">Supprimer</button></li>`;
+    });
+
     document.getElementById("total").innerText = total;
+}
+
+function applyPromo() {
+    const code = document.getElementById("promoInput").value;
+    if(code === "SUMMER10") {
+        total = total * 0.9;
+        document.getElementById("promoMsg").innerText = "Promo appliquée (-10%)";
+        document.getElementById("total").innerText = total.toFixed(2);
+    } else {
+        document.getElementById("promoMsg").innerText = "Code invalide";
+    }
 }
 </script>
 
