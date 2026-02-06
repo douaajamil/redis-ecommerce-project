@@ -22,19 +22,19 @@
 <div class="card">
   <h3>Produit 1</h3>
   <p class="price">10 €</p>
-  <button onclick="addToCart('Produit 1',10)">Ajouter au panier</button>
+  <button onclick="addToCart('Produit 1',10)">Ajouter</button>
 </div>
 
 <div class="card">
   <h3>Produit 2</h3>
   <p class="price">20 €</p>
-  <button onclick="addToCart('Produit 2',20)">Ajouter au panier</button>
+  <button onclick="addToCart('Produit 2',20)">Ajouter</button>
 </div>
 
 <div class="card">
   <h3>Produit 3</h3>
-  <p class="price">15 €</p>
-  <button onclick="addToCart('Produit 3',15)">Ajouter au panier</button>
+  <p class="price">70 €</p>
+  <button onclick="addToCart('Produit 3',70)">Ajouter</button>
 </div>
 
 </div>
@@ -56,48 +56,72 @@
 
 </section>
 
-<footer>
-© 2026 — Mini E-commerce Redis
-</footer>
+<footer>© 2026 — Mini E-commerce Redis</footer>
 
 <script>
 let cart = [];
 let total = 0;
 
+// Promo
+const PROMO_CODE = "SUMMER2026";
+const PROMO_DURATION = 2 * 60 * 1000;
+
+
 function addToCart(name, price) {
-    cart.push({name, price});
-    updateCart();
+  cart.push({name, price});
+  updateCart();
 }
 
 function removeItem(index) {
-    total -= cart[index].price;
-    cart.splice(index,1);
-    updateCart();
+  cart.splice(index,1);
+  updateCart();
 }
 
 function updateCart() {
-    const list = document.getElementById("cartList");
-    list.innerHTML = "";
-    total = 0;
+  const list = document.getElementById("cartList");
+  list.innerHTML = "";
+  total = 0;
 
-    cart.forEach((item,i) => {
-        total += item.price;
-        list.innerHTML += `<li>${item.name} - ${item.price}€ 
-        <button onclick="removeItem(${i})">Supprimer</button></li>`;
-    });
+  cart.forEach((item, i) => {
+    total += item.price;
+    list.innerHTML += `<li>${item.name} - ${item.price} €
+      <button onclick="removeItem(${i})">Supprimer</button></li>`;
+  });
 
-    document.getElementById("total").innerText = total;
+  document.getElementById("total").innerText = total;
 }
 
+// CODE PROMO SIMPLE
 function applyPromo() {
-    const code = document.getElementById("promoInput").value;
-    if(code === "SUMMER10") {
-        total = total * 0.9;
-        document.getElementById("promoMsg").innerText = "Promo appliquée (-10%)";
-        document.getElementById("total").innerText = total.toFixed(2);
-    } else {
-        document.getElementById("promoMsg").innerText = "Code invalide";
-    }
+  const input = document.getElementById("promoInput").value;
+  const msg = document.getElementById("promoMsg");
+
+  const used = localStorage.getItem("promo_used");
+  const time = localStorage.getItem("promo_time");
+  const now = new Date().getTime();
+
+  // Déjà utilisé et encore valide
+  if (used && time && now - parseInt(time) < PROMO_DURATION) {
+    msg.style.color = "red";
+    msg.innerText = "Code promo déjà utilisé.";
+    return;
+  }
+
+  // Code valide
+  if (input === PROMO_CODE) {
+  localStorage.setItem("promo_used", "true");
+  localStorage.setItem("promo_time", now);
+
+  total = total * 0.9; // -10%
+
+  document.getElementById("total").innerText = total.toFixed(2);
+
+  msg.style.color = "green";
+  msg.innerText = "Code promo appliqué avec succès (-10%).";
+} else {
+    msg.style.color = "red";
+    msg.innerText = "Code promo invalide.";
+  }
 }
 </script>
 
